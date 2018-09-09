@@ -14,6 +14,8 @@ type Header struct {
 	DataOffset uint32
 	Size       uint32
 	LastSize   uint32 // same as last word in FATB
+	_          uint32 // unknown
+	_          uint32
 }
 
 // File allocation table offsets
@@ -47,7 +49,7 @@ type Reader interface {
 
 type File struct {
 	io.SectionReader
-	off int64
+	off   int64
 	Major int
 	Minor int
 }
