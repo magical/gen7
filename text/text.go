@@ -140,7 +140,7 @@ func escape(s []uint16, ASCIIonly bool) string {
 				buf = append(buf, byte(r))
 				continue
 			}
-		} else if strconv.IsPrint(r) {
+		} else if printable(r) {
 			n := utf8.EncodeRune(runeTmp[:], r)
 			buf = append(buf, runeTmp[:n]...)
 			continue
@@ -183,4 +183,8 @@ func escape(s []uint16, ASCIIonly bool) string {
 		}
 	}
 	return string(buf)
+}
+
+func printable(r rune) bool {
+	return strconv.IsPrint(r) || r == 0x3000 // fullwidth space
 }
