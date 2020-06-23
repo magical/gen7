@@ -5,8 +5,8 @@ import (
 	"errors"
 	"io"
 	"strconv"
-	"unicode/utf8"
 	"unicode/utf16"
+	"unicode/utf8"
 )
 
 var le = binary.LittleEndian
@@ -31,7 +31,7 @@ func ReadRaw(r io.Reader) ([][]uint16, error) {
 	type entry struct {
 		Offset uint32
 		Length uint16
-		_ uint16 // unknown
+		_      uint16 // unknown
 	}
 	var junk = make([]uint32, header.Sections+2)
 	var entries = make([]entry, header.Lines)
@@ -55,7 +55,7 @@ func ReadRaw(r io.Reader) ([][]uint16, error) {
 	for _, e := range entries {
 		off := int(e.Offset) - textOff
 		//fmt.Println(e, off/2, len(chars))
-		if off/2 + int(e.Length) > len(chars) {
+		if off/2+int(e.Length) > len(chars) {
 			return nil, errors.New("text: offset out of range")
 		}
 		chars := chars[off/2:][:e.Length]
@@ -109,7 +109,7 @@ func escape(s []uint16, ASCIIonly bool) string {
 	for width := 0; len(s) > 0; s = s[width:] {
 		r := rune(s[0])
 		width = 1
-		if r == 0x10 && len(s) > 1{
+		if r == 0x10 && len(s) > 1 {
 			width = int(s[1]) + 2
 			if width > len(s) {
 				width = len(s)
